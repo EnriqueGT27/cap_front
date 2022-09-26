@@ -1,64 +1,67 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# pokedex-api-laravel
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a little demo of an API allowing create, update, delete as well as a listing of pokemons.
+The database is populated via a csv.
 
-## About Laravel
+[Postman documentation](https://documenter.getpostman.com/view/12628792/TVK75Ke8)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+[Staging url](https://pure-stream-21702.herokuapp.com)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Installation 
+Requires : 
+- PHP >= 7.2
+- [composer](https://getcomposer.org/download/)
+- MySQL or equivalent
+```bash
+# set up your .env
+cp .env.example .env
+# then modify the infos in your .env
+composer install
+# generate app key (laravel specific)
+php artisan key:generate
+# Migrate all the database
+php artisan migrate
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# Install passport (for authentication)
+# Note: this will generate key in your app/storage folder. You can also those keys in your .env like so:
+# PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\nMIIJJwIBAAKCAgEAw3KPag...\n-----END RSA PRIVATE KEY-----"
+# PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOC...\n-----END PUBLIC KEY-----\n"
+php artisan passport:install
+# launch a development server
+php artisan serve
+```
+## Conventions 
+- Commits follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)
+- Code Style follows [PSR-12](https://www.php-fig.org/psr/psr-12/)
 
-## Learning Laravel
+## Testing
+You can run tests via `php artisan test`. It is recommended to have a test driven approach to your development. You need at least one user in database.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## API 
+[Postman documentation](https://documenter.getpostman.com/view/12628792/TVK75Ke8)
+Some methods require an account. This can be created by the register method for now.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Import
 
-## Laravel Sponsors
+The pokemon data can be reset by running `php artisan pokemon:import`. See file `app/Console/Commands/ImportPokemon.php`.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## TODO 
+### Must have
+- [x] make a csv class to read the csv and make it into a collection.
+- [x] create a Pokemon model, and the appropriate database migration
+- [x] create an import command from the csv to the pokemons table
+- [x] create the PokemonController, with postman documentation
+### Should have
+- [x] Heroku implementation
+- [x] Do not allow create of the same name
+- [x] create an autentication method for the API (use passport)
+- [x] tidy code : put models in a Models/ directory
+- [ ] remove register endpoint for even more security
+- [ ] Commands, import : Bulk import instead of save in foreach
+### Nice to have
+- [ ] add a updated_by to the Pokemon class for more security
+- [ ] soft delete
+- [ ] Commands, import : make a separate command (or add option) that updates or create, and does not drop table pokemons
+- [ ] Commands, import : allow to use another csv than /storage/app/csv/pokemon.csv
+- [ ] Commands, import : make nice little user output
+- [ ] Services, csv : make App\Services\CsvService take a path instead of writing and reading only in /storage/app/csv

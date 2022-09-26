@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PokemonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::post('/register', 'PassportAuthController@register');
+Route::post('/login', 'PassportAuthController@login');
+
+Route::get('/pokemons', 'PokemonController@index');
+Route::get('/pokemon/{id}', 'PokemonController@read');
+Route::middleware('auth:api')->group(function () {
+    Route::post('/pokemons/new', 'PokemonController@create');
+    Route::delete('/pokemon/{id}', 'PokemonController@delete');
+    Route::put('/pokemon/{id}', 'PokemonController@update');
 });
