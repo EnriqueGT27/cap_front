@@ -2,52 +2,25 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Pokemon extends Model
 {
-    /**
-    * The corresponding table name in database
-    * @var string
-    */
+    use HasFactory;
+
     protected $table = 'pokemons';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'number',
-        'type_1',
-        'type_2',
-        'total_points',
-        'health_points',
-        'attack_points',
-        'defense_points',
-        'special_attack_points',
-        'special_defense_points',
-        'speed_points',
-        'generation',
-        'legendary'
-    ];
+    protected $appends = ['more_info_url', 'image_url'];
 
-     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'number' => 'integer',
-        'total_points' => 'integer',
-        'health_points' => 'integer',
-        'attack_points' => 'integer',
-        'defense_points' => 'integer',
-        'special_attack_points' => 'integer',
-        'special_defense_points' => 'integer',
-        'speed_points' => 'integer',
-        'generation' => 'integer',
-        'legendary' => 'boolean'
-    ];
+    public function getMoreInfoUrlAttribute()
+    {
+        return "https://www.pokemon.com/el/pokedex/" . strtolower($this->name);
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" .
+            ltrim($this->code, '0') . '.png';
+    }
 }
