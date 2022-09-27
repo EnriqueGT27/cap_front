@@ -11,7 +11,7 @@ class PokemonController extends Controller
     {
         return view('welcome');
     }
-
+    // aquí se obtiene la información para mostrarla en pantalla
     public function show()
     {
         return response()->json(Pokemon::all(), 200);
