@@ -1,4 +1,5 @@
 <template>
+<!-- creacion de la vista de la pokedex -->
     <div>
         <the-search-box></the-search-box>
 
